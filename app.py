@@ -1,5 +1,5 @@
-from flask import Flask
-from models import db
+from flask import Flask, request
+from models import db, Users
 
 app = Flask(__name__)
 
@@ -20,9 +20,38 @@ db.init_app(app)
 def main():
     return 'Hello World ok!'
 
-@app.route("/users", methods = ['GET', 'POST'])
-def main():
-    return 'Hello World ok!'
+@app.route("/api/users", methods = ['GET', 'POST'])
+def users():
+   
+    errors = []
+    users = {}
+    if request.method == "POST":
+
+        if not request.form['user_name']:
+            flash('please enter book name')
+
+        else:
+           
+            try:
+                
+                users = Users(
+                    # user_id = 3,
+                    user_name = request.form['user_name'],
+                    org_name = request.form['org_name'],
+                    org_address = request.form['org_address'],
+                    email = request.form['email']
+                
+                )
+                print 'users'
+                print users
+                db.session.add(users)
+                db.session.commit()
+            except:
+                errors.append("Unable to add in database.")
+    return users.user_name            
+    # return render_template('index.html', errors=errors, results=results)
+
+
 
 if __name__ == '__main__':
     app.run()

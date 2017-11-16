@@ -34,3 +34,23 @@ class Station(BaseModel, db.Model):
     id = db.Column(db.Integer, primary_key = True)
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
+
+class Users(BaseModel, db.Model):
+    """Model for the Users table"""
+    __tablename__ = 'users'
+
+    user_id = db.Column(db.Integer, primary_key = True)
+    user_name = db.Column(db.String(60), unique=True, nullable=False)
+    org_name = db.Column(db.String(200), nullable=False)
+    org_address = db.Column(db.String(200), nullable=True)
+    email = db.Column(db.String(200), nullable=True)  
+
+    def __init__(self, user_name, org_name, org_address, email):  
+        # self.user_id = user_id
+        self.user_name =user_name
+        self.org_name = org_name
+        self.org_address = org_address
+        self.email = email
+
+    def __repr__(self):
+        return '<username %r>' % self.user_name             
